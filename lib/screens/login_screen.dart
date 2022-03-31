@@ -192,8 +192,9 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        'Sign In',
+                        'Welcome to Cooking Papa',
                         style: TextStyle(
+                            fontFamily: 'lobster',
                             color: Colors.white,
                             fontSize: 40,
                             fontWeight: FontWeight.bold),
