@@ -1,3 +1,6 @@
+import 'package:cooking_papa/screens/home_screen.dart';
+import 'package:cooking_papa/screens/ingredient_screen.dart';
+import 'package:cooking_papa/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 import './dummy_data.dart';
@@ -7,6 +10,7 @@ import './screens/category_meals_screen.dart';
 import './screens/filters_screen.dart';
 import './screens/categories_screen.dart';
 import './models/meal.dart';
+import './screens/home_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -72,9 +76,12 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'DeliMeals',
       theme: ThemeData(
-        primarySwatch: Colors.pink,
-        accentColor: Colors.amber,
-        canvasColor: Color.fromRGBO(255, 254, 229, 1),
+        appBarTheme: AppBarTheme(
+            backgroundColor: Colors.white,
+            iconTheme: IconThemeData(color: Colors.red)),
+        primaryColor: Colors.white,
+        accentColor: Colors.red,
+        canvasColor: Colors.white,
         fontFamily: 'Raleway',
         textTheme: ThemeData.light().textTheme.copyWith(
             bodyText1: TextStyle(
@@ -90,9 +97,13 @@ class _MyAppState extends State<MyApp> {
             )),
       ),
       // home: CategoriesScreen(),
-      initialRoute: '/', // default is '/'
+      initialRoute: '/login', // default is '/'
       routes: {
         '/': (ctx) => TabsScreen(_favoriteMeals),
+        LoginPage.routeName: (ctx) => LoginPage(),
+        HomeScreen.routeName: (ctx) => HomeScreen(),
+        IngredientScreen.routeName: (ctx) => const IngredientScreen(),
+        CategoriesScreen.routeName: (ctx) => CategoriesScreen(),
         CategoryMealsScreen.routeName: (ctx) =>
             CategoryMealsScreen(_availableMeals),
         MealDetailScreen.routeName: (ctx) =>
