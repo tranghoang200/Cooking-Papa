@@ -195,7 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                         'Welcome to Cooking Papa',
                         style: TextStyle(
                             fontFamily: 'lobster',
-                            color: Colors.white,
+                            color: Colors.redAccent,
                             fontSize: 40,
                             fontWeight: FontWeight.bold),
                       ),
