@@ -143,8 +143,7 @@ class _LoginPageState extends State<LoginPage> {
           UserCredential userCredential;
           try {
             userCredential = await FirebaseAuth.instance
-                .signInWithEmailAndPassword(
-                    email: email, password: password);
+                .signInWithEmailAndPassword(email: email, password: password);
             Navigator.of(context).pushNamed('/');
           } on FirebaseAuthException catch (e) {
             if (e.code == 'user-not-found') {
