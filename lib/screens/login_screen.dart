@@ -10,6 +10,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool isRememberMe = false;
+  String email = "";
+  String password = "";
   Widget buildEmail() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,6 +33,11 @@ class _LoginPageState extends State<LoginPage> {
               ]),
           height: 60,
           child: TextField(
+            onChanged: (value) {
+              setState(() {
+                email = value;
+              });
+            },
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(color: Colors.black87),
             decoration: InputDecoration(
@@ -66,6 +73,11 @@ class _LoginPageState extends State<LoginPage> {
               ]),
           height: 60,
           child: TextField(
+            onChanged: (value) {
+              setState(() {
+                password = value;
+              });
+            },
             obscureText: true,
             style: TextStyle(color: Colors.black87),
             decoration: InputDecoration(
@@ -128,11 +140,12 @@ class _LoginPageState extends State<LoginPage> {
       child: RaisedButton(
         elevation: 5,
         onPressed: () async {
+          UserCredential userCredential;
           try {
-            UserCredential userCredential = await FirebaseAuth.instance
+            userCredential = await FirebaseAuth.instance
                 .signInWithEmailAndPassword(
-                    email: "tuantruong17@augustana.edu",
-                    password: "SuperSecretPassword");
+                    email: email, password: password);
+            Navigator.of(context).pushNamed('/');
           } on FirebaseAuthException catch (e) {
             if (e.code == 'user-not-found') {
               print('No user found for that email.');
