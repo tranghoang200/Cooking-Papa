@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = '/login';
@@ -9,6 +10,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool isRememberMe = false;
+  String email = "";
+  String password = "";
   Widget buildEmail() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,6 +33,11 @@ class _LoginPageState extends State<LoginPage> {
               ]),
           height: 60,
           child: TextField(
+            onChanged: (value) {
+              setState(() {
+                email = value;
+              });
+            },
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(color: Colors.black87),
             decoration: InputDecoration(
@@ -65,6 +73,11 @@ class _LoginPageState extends State<LoginPage> {
               ]),
           height: 60,
           child: TextField(
+            onChanged: (value) {
+              setState(() {
+                password = value;
+              });
+            },
             obscureText: true,
             style: TextStyle(color: Colors.black87),
             decoration: InputDecoration(
@@ -126,7 +139,20 @@ class _LoginPageState extends State<LoginPage> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5,
-        onPressed: () => Navigator.of(context).pushNamed('/'),
+        onPressed: () async {
+          UserCredential userCredential;
+          try {
+            userCredential = await FirebaseAuth.instance
+                .signInWithEmailAndPassword(email: email, password: password);
+            Navigator.of(context).pushNamed('/');
+          } on FirebaseAuthException catch (e) {
+            if (e.code == 'user-not-found') {
+              print('No user found for that email.');
+            } else if (e.code == 'wrong-password') {
+              print('Wrong password provided for that user.');
+            }
+          }
+        },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         color: Colors.white,

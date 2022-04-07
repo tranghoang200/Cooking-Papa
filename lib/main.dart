@@ -1,6 +1,7 @@
 import 'package:cooking_papa/screens/home_screen.dart';
 import 'package:cooking_papa/screens/ingredient_screen.dart';
 import 'package:cooking_papa/screens/login_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import './dummy_data.dart';
@@ -11,8 +12,15 @@ import './screens/filters_screen.dart';
 import './screens/categories_screen.dart';
 import './models/meal.dart';
 import './screens/home_screen.dart';
+import 'firebase_options.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override
