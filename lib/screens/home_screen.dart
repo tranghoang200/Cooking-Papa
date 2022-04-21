@@ -1,11 +1,19 @@
 import 'dart:io';
 
+import 'package:cooking_papa/providers/Recipe.dart';
 import 'package:cooking_papa/screens/ingredient_screen.dart';
 import 'package:cooking_papa/widgets/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+
+/**
+ * HomeScreen is a statefull class which contain state that change when the app run
+ * Protential State:
+ * textInput: get input from the user
+ */
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key key}) : super(key: key);
@@ -54,11 +62,15 @@ class _HomeScreenState extends State<HomeScreen> {
         ));
   }
 
+/**
+ * onImageSelected take the file image from the user and 
+ * call Google Vision to check the Ingredient
+ */
   onImageSelected(XFile p1) async {
     File receiptFile = File(p1.path);
     var bytes = receiptFile.readAsBytesSync();
     String base64Image = convert.base64Encode(bytes);
-    print(base64Image);
+
     var exclude = [
       "Food",
       "Ingredient",
@@ -121,11 +133,11 @@ class _HomeScreenState extends State<HomeScreen> {
         itemList += data[i]["name"] + ',';
       }
       // if (itemList.length != 0) {
+      Provider.of<Recipe>(context, listen: false).setIngredients(itemList);
       await Navigator.of(context).pushNamed(
         IngredientScreen.routeName,
         arguments: {
           'image': base64Image,
-          'ingredients': itemList,
         },
       );
       // }

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import '../dummy_data.dart';
 import '../widgets/category_item.dart';
 
+// CategoriesScreen is stateless class not contain any state
+// this class is display all the categories from the database
+// for user to choose when limit the recipe
 class CategoriesScreen extends StatelessWidget {
   static const routeName = '/categories_screen';
 

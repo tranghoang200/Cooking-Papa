@@ -1,6 +1,16 @@
+import 'package:cooking_papa/providers/Recipe.dart';
+import 'package:provider/provider.dart';
+
 import './categories_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
+
+/**
+ * IngredientScreen is a statefull class which contain state that change when the app run
+ * State:
+ * image: display image of the recipe
+ * ingredients: list of ingredients
+ */
 
 class IngredientScreen extends StatefulWidget {
   const IngredientScreen({Key key}) : super(key: key);
@@ -14,6 +24,7 @@ class _IngredientScreenState extends State<IngredientScreen> {
   String image;
   List<String> ingredients;
   var _loadedInitData = false;
+  String ingredientsList;
 
   @override
   void initState() {
@@ -27,8 +38,9 @@ class _IngredientScreenState extends State<IngredientScreen> {
       final routeArgs =
           ModalRoute.of(context).settings.arguments as Map<String, String>;
       image = routeArgs['image'];
-      String input2 = routeArgs['ingredients'];
+      String input2 = Provider.of<Recipe>(context).ingredients;
       ingredients = input2.split(',');
+      ingredientsList = input2;
       // displayedMeals = widget.availableMeals.where((meal) {
       //   return meal.categories.contains(categoryId);
       // }).toList();
@@ -96,8 +108,12 @@ class _IngredientScreenState extends State<IngredientScreen> {
             style: TextButton.styleFrom(
               primary: Colors.red,
             ),
-            onPressed: () =>
-                Navigator.of(context).pushNamed(CategoriesScreen.routeName),
+            onPressed: () => Navigator.of(context).pushNamed(
+              CategoriesScreen.routeName,
+              arguments: {
+                'ingredients': ingredientsList,
+              },
+            ),
             child: Text(
               'Continue',
               style: TextStyle(fontSize: 20),

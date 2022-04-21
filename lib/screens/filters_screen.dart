@@ -2,6 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../widgets/main_drawer.dart';
 
+/**
+ * FiltersScreen is a statefull class which contain state that change when the app run
+ * State:
+ * saveFilters: list filter that recipe from database need to filter
+ * currentFilters: the current filter that the user choose
+ * _glutenFree: just display the recipe that include gluten free ingredient
+ * _vegetarian: just display the recipe that include vegetable ingredient
+ * _vegan: just display the recipe that include vegan ingredient
+ * _lactoseFree: just display the recipe that include lactose free ingredient
+ */
+
 class FiltersScreen extends StatefulWidget {
   static const routeName = '/filters';
 

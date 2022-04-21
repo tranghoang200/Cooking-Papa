@@ -6,6 +6,11 @@ import './favorites_screen.dart';
 import '../models/meal.dart';
 import './home_screen.dart';
 
+/**
+ * TabsScreen is a statefull class which contain state that change when the app run
+ * This screen display the bottom tab bar for the user to transit from home screen to favorite screen
+ */
+
 class TabsScreen extends StatefulWidget {
   final List<Meal> favoriteMeals;
 
@@ -34,6 +39,9 @@ class _TabsScreenState extends State<TabsScreen> {
     super.initState();
   }
 
+/**
+ * _selectPage will take the index of the screen and render the right screen
+ */
   void _selectPage(int index) {
     setState(() {
       _selectedPageIndex = index;
