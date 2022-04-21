@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+// ImagePickerButton is stateless class not contain any state
+// this class is display all the image picker button
+// the button will open a modal which have 2 options
+// 1. pick from gallery
+// 2. take a picture
+
 class ImagePickerButton extends StatelessWidget {
   final double maxImageWidth;
   final double maxImageHeight;

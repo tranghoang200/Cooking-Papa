@@ -1,14 +1,28 @@
+import 'package:cooking_papa/providers/Recipe.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../dummy_data.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+import 'dart:io';
 
-class MealDetailScreen extends StatelessWidget {
+class MealDetailScreen extends StatefulWidget {
   static const routeName = '/meal-detail';
 
   final Function toggleFavorite;
   final Function isFavorite;
 
   MealDetailScreen(this.toggleFavorite, this.isFavorite);
+
+  @override
+  State<MealDetailScreen> createState() => _MealDetailScreenState();
+}
+
+class _MealDetailScreenState extends State<MealDetailScreen> {
+  var _loadedInitData = false;
+  var _isLoading = false;
+  var selectedMeal;
 
   Widget buildSectionTitle(BuildContext context, String text) {
     return Container(
@@ -36,9 +50,32 @@ class MealDetailScreen extends StatelessWidget {
   }
 
   @override
+  Future<void> didChangeDependencies() {
+    if (!_loadedInitData) {
+      final routeArgs =
+          ModalRoute.of(context).settings.arguments as Map<String, String>;
+      // image = routeArgs['image'];
+      String recipeId = routeArgs['id'];
+      print(recipeId);
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<Recipe>(context).getMealDetail(recipeId).then((value) => {
+            setState(() {
+              _isLoading = false;
+            })
+          });
+
+      selectedMeal = Provider.of<Recipe>(context).selectedMeal;
+      print(selectedMeal);
+      _loadedInitData = true;
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final mealId = ModalRoute.of(context).settings.arguments as String;
-    final selectedMeal = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
+    // final mealId = ModalRoute.of(context).settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
         title: Text('${selectedMeal.title}'),
@@ -50,7 +87,7 @@ class MealDetailScreen extends StatelessWidget {
               height: 300,
               width: double.infinity,
               child: Image.network(
-                selectedMeal.imageUrl,
+                selectedMeal.image,
                 fit: BoxFit.cover,
               ),
             ),
@@ -64,39 +101,39 @@ class MealDetailScreen extends StatelessWidget {
                         vertical: 5,
                         horizontal: 10,
                       ),
-                      child: Text(selectedMeal.ingredients[index])),
+                      child: Text(selectedMeal.extendedIngredients[index])),
                 ),
-                itemCount: selectedMeal.ingredients.length,
+                itemCount: selectedMeal.extendedIngredients.length,
               ),
             ),
-            buildSectionTitle(context, 'Steps'),
-            buildContainer(
-              ListView.builder(
-                itemBuilder: (ctx, index) => Column(
-                  children: [
-                    ListTile(
-                      leading: CircleAvatar(
-                        child: Text('# ${(index + 1)}'),
-                      ),
-                      title: Text(
-                        selectedMeal.steps[index],
-                      ),
-                    ),
-                    Divider()
-                  ],
-                ),
-                itemCount: selectedMeal.steps.length,
-              ),
-            ),
+            // buildSectionTitle(context, 'Steps'),
+            // buildContainer(
+            //   ListView.builder(
+            //     itemBuilder: (ctx, index) => Column(
+            //       children: [
+            //         ListTile(
+            //           leading: CircleAvatar(
+            //             child: Text('# ${(index + 1)}'),
+            //           ),
+            //           title: Text(
+            //             selectedMeal.steps[index],
+            //           ),
+            //         ),
+            //         Divider()
+            //       ],
+            //     ),
+            //     itemCount: selectedMeal.steps.length,
+            //   ),
+            // ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          isFavorite(mealId) ? Icons.star : Icons.star_border,
-        ),
-        onPressed: () => toggleFavorite(mealId),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(
+      //     widget.isFavorite(mealId) ? Icons.star : Icons.star_border,
+      //   ),
+      //   onPressed: () => widget.toggleFavorite(mealId),
+      // ),
     );
   }
 }

@@ -14,6 +14,8 @@ import './screens/categories_screen.dart';
 import './models/meal.dart';
 import './screens/home_screen.dart';
 import 'firebase_options.dart';
+import './providers/Recipe.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,28 +37,28 @@ class _MyAppState extends State<MyApp> {
     'vegan': false,
     'vegetarian': false,
   };
-  List<Meal> _availableMeals = DUMMY_MEALS;
+  // List<Meal> _availableMeals = DUMMY_MEALS;
   List<Meal> _favoriteMeals = [];
 
   void _setFilters(Map<String, bool> filterData) {
     setState(() {
       _filters = filterData;
 
-      _availableMeals = DUMMY_MEALS.where((meal) {
-        if (_filters['gluten'] && !meal.isGlutenFree) {
-          return false;
-        }
-        if (_filters['lactose'] && !meal.isLactoseFree) {
-          return false;
-        }
-        if (_filters['vegan'] && !meal.isVegan) {
-          return false;
-        }
-        if (_filters['vegetarian'] && !meal.isVegetarian) {
-          return false;
-        }
-        return true;
-      }).toList();
+      // _availableMeals = DUMMY_MEALS.where((meal) {
+      //   if (_filters['gluten'] && !meal.isGlutenFree) {
+      //     return false;
+      //   }
+      //   if (_filters['lactose'] && !meal.isLactoseFree) {
+      //     return false;
+      //   }
+      //   if (_filters['vegan'] && !meal.isVegan) {
+      //     return false;
+      //   }
+      //   if (_filters['vegetarian'] && !meal.isVegetarian) {
+      //     return false;
+      //   }
+      //   return true;
+      // }).toList();
     });
   }
 
@@ -69,9 +71,9 @@ class _MyAppState extends State<MyApp> {
       });
     } else {
       setState(() {
-        _favoriteMeals.add(
-          DUMMY_MEALS.firstWhere((meal) => meal.id == mealId),
-        );
+        // _favoriteMeals.add(
+        //   DUMMY_MEALS.firstWhere((meal) => meal.id == mealId),
+        // );
       });
     }
   }
@@ -82,58 +84,60 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'DeliMeals',
-      theme: ThemeData(
-        appBarTheme: AppBarTheme(
-            backgroundColor: Colors.white,
-            iconTheme: IconThemeData(color: Colors.red)),
-        primaryColor: Colors.white,
-        accentColor: Colors.red,
-        canvasColor: Colors.white,
-        fontFamily: 'Raleway',
-        textTheme: ThemeData.light().textTheme.copyWith(
-            bodyText1: TextStyle(
-              color: Color.fromRGBO(20, 51, 51, 1),
-            ),
-            bodyText2: TextStyle(
-              color: Color.fromRGBO(20, 51, 51, 1),
-            ),
-            headline6: TextStyle(
-              fontSize: 20,
-              fontFamily: 'RobotoCondensed',
-              fontWeight: FontWeight.bold,
-            )),
-      ),
-      // home: CategoriesScreen(),
-      initialRoute: '/login', // default is '/'
-      routes: {
-        '/': (ctx) => TabsScreen(_favoriteMeals),
-        LoginPage.routeName: (ctx) => LoginPage(),
-        SignUpScreen.routeName: (ctx) => SignUpScreen(),
-        HomeScreen.routeName: (ctx) => HomeScreen(),
-        IngredientScreen.routeName: (ctx) => const IngredientScreen(),
-        CategoriesScreen.routeName: (ctx) => CategoriesScreen(),
-        CategoryMealsScreen.routeName: (ctx) =>
-            CategoryMealsScreen(_availableMeals),
-        MealDetailScreen.routeName: (ctx) =>
-            MealDetailScreen(_toggleFavorite, _isMealFavorite),
-        FiltersScreen.routeName: (ctx) => FiltersScreen(_filters, _setFilters),
-      },
-      onGenerateRoute: (settings) {
-        print(settings.arguments);
-        // if (settings.name == '/meal-detail') {
-        //   return ...;
-        // } else if (settings.name == '/something-else') {
-        //   return ...;
-        // }
-        // return MaterialPageRoute(builder: (ctx) => CategoriesScreen(),);
-      },
-      onUnknownRoute: (settings) {
-        return MaterialPageRoute(
-          builder: (ctx) => CategoriesScreen(),
-        );
-      },
-    );
+    return ChangeNotifierProvider<Recipe>(
+        create: (BuildContext context) => Recipe(),
+        child: MaterialApp(
+          title: 'DeliMeals',
+          theme: ThemeData(
+            appBarTheme: AppBarTheme(
+                backgroundColor: Colors.white,
+                iconTheme: IconThemeData(color: Colors.red)),
+            primaryColor: Colors.white,
+            accentColor: Colors.red,
+            canvasColor: Colors.white,
+            fontFamily: 'Raleway',
+            textTheme: ThemeData.light().textTheme.copyWith(
+                bodyText1: TextStyle(
+                  color: Color.fromRGBO(20, 51, 51, 1),
+                ),
+                bodyText2: TextStyle(
+                  color: Color.fromRGBO(20, 51, 51, 1),
+                ),
+                headline6: TextStyle(
+                  fontSize: 20,
+                  fontFamily: 'RobotoCondensed',
+                  fontWeight: FontWeight.bold,
+                )),
+          ),
+          // home: CategoriesScreen(),
+          initialRoute: '/login', // default is '/'
+          routes: {
+            '/': (ctx) => TabsScreen(_favoriteMeals),
+            LoginPage.routeName: (ctx) => LoginPage(),
+            SignUpScreen.routeName: (ctx) => SignUpScreen(),
+            HomeScreen.routeName: (ctx) => HomeScreen(),
+            IngredientScreen.routeName: (ctx) => const IngredientScreen(),
+            CategoriesScreen.routeName: (ctx) => CategoriesScreen(),
+            CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(),
+            MealDetailScreen.routeName: (ctx) =>
+                MealDetailScreen(_toggleFavorite, _isMealFavorite),
+            FiltersScreen.routeName: (ctx) =>
+                FiltersScreen(_filters, _setFilters),
+          },
+          onGenerateRoute: (settings) {
+            print(settings.arguments);
+            // if (settings.name == '/meal-detail') {
+            //   return ...;
+            // } else if (settings.name == '/something-else') {
+            //   return ...;
+            // }
+            // return MaterialPageRoute(builder: (ctx) => CategoriesScreen(),);
+          },
+          onUnknownRoute: (settings) {
+            return MaterialPageRoute(
+              builder: (ctx) => CategoriesScreen(),
+            );
+          },
+        ));
   }
 }
