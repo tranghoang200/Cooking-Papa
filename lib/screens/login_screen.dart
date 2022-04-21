@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:cooking_papa/screens/ForgotPassword.dart';
+
+/*
+Contribute by Vuong Nguyen (Jay)
+This class is called "LoginPage" which responsible for the
+login page of the app when the app is first open. The class
+has different widget for different purposes as you can see below.
+ */
 
 class LoginPage extends StatefulWidget {
   static const routeName = '/login';
@@ -7,8 +15,14 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
+
 class _LoginPageState extends State<LoginPage> {
   bool isRememberMe = false;
+  /*
+  The widget buildEmail will create a white rectangle box
+  which include the email icon and the text said "Email"
+  before the user enter their email.
+   */
   Widget buildEmail() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,6 +58,12 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /*
+  The widget buildPassword will also create a white rectangle box
+  that has the same width and length as email rectangle box. It will
+  contain the lock icon as well as the text "Password" before the
+  user enter their actual password.
+   */
   Widget buildPassword() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,11 +99,19 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /*
+  This widget buildForgotPassBtn is used to create a button that
+  appear on the login screen as "Forgot Password" which later will
+  allow the user to get their password back when they forget. The
+  button is under the Password Rectangle at the right of the screen.
+   */
   Widget buildForgotPassBtn() {
     return Container(
       alignment: Alignment.centerRight,
       child: FlatButton(
-        onPressed: () => print("Forgot Password"),
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgotPassword()));
+        },
         padding: EdgeInsets.only(right: 0),
         child: Text(
           'Forgot Password',
@@ -93,6 +121,12 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /*
+  The widget buildRememberMe will create a small white check box
+  next to the text "Remember Me" which later during the term will
+  allow user skip the step of entering their email and password
+  when they try to re-open the app.
+   */
   Widget buildRememberMe() {
     return Container(
       height: 20,
@@ -120,6 +154,10 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /*
+  The widget buildLoginBtn is a simple white rectangle button which
+  allow the user to login after they enter correct email and password.
+   */
   Widget buildLoginBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25),
@@ -141,9 +179,13 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /*
+  The widget buildSignUpBtn is a button for the user to sign up when
+  they are first time user.
+   */
   Widget buildSignUpBtn() {
     return GestureDetector(
-      onTap: () => print("Sign Up Pressed"),
+      onTap: () => print("Sign Up Pressed"), //print statement
       child: RichText(
         text: TextSpan(children: [
           TextSpan(
@@ -195,7 +237,7 @@ class _LoginPageState extends State<LoginPage> {
                         'Welcome to Cooking Papa',
                         style: TextStyle(
                             fontFamily: 'lobster',
-                            color: Colors.white,
+                            color: Colors.redAccent,
                             fontSize: 40,
                             fontWeight: FontWeight.bold),
                       ),

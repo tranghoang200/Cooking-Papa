@@ -11,6 +11,7 @@ import './screens/filters_screen.dart';
 import './screens/categories_screen.dart';
 import './models/meal.dart';
 import './screens/home_screen.dart';
+import 'package:cooking_papa/screens/ForgotPassword.dart';
 
 void main() => runApp(MyApp());
 
