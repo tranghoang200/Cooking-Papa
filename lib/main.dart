@@ -2,6 +2,7 @@ import 'package:cooking_papa/screens/home_screen.dart';
 import 'package:cooking_papa/screens/ingredient_screen.dart';
 import 'package:cooking_papa/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:cooking_papa/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 
 import './dummy_data.dart';
@@ -109,6 +110,7 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/': (ctx) => TabsScreen(_favoriteMeals),
         LoginPage.routeName: (ctx) => LoginPage(),
+        SignUpScreen.routeName: (ctx) => SignUpScreen(),
         HomeScreen.routeName: (ctx) => HomeScreen(),
         IngredientScreen.routeName: (ctx) => const IngredientScreen(),
         CategoriesScreen.routeName: (ctx) => CategoriesScreen(),

@@ -147,9 +147,37 @@ class _LoginPageState extends State<LoginPage> {
             Navigator.of(context).pushNamed('/');
           } on FirebaseAuthException catch (e) {
             if (e.code == 'user-not-found') {
-              print('No user found for that email.');
+              return showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: Text("No user found!"),
+                  content: Text("No user found for that email."),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.of(ctx).pop();
+                      },
+                      child: Text("Ok"),
+                    ),
+                  ],
+                ),
+              );
             } else if (e.code == 'wrong-password') {
-              print('Wrong password provided for that user.');
+              return showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: Text("Wrong password!"),
+                  content: Text("Wrong password provided for that user."),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.of(ctx).pop();
+                      },
+                      child: Text("Ok"),
+                    ),
+                  ],
+                ),
+              );
             }
           }
         },
@@ -169,7 +197,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget buildSignUpBtn() {
     return GestureDetector(
-      onTap: () => print("Sign Up Pressed"),
+      onTap: () => Navigator.of(context).pushNamed('/signup'),
       child: RichText(
         text: TextSpan(children: [
           TextSpan(
