@@ -7,6 +7,13 @@ class ForgotPassword extends StatefulWidget {
 
 class _ForgotPasswordState extends State<ForgotPassword> {
   @override
+  /*
+  This widget is build when the user hit the forget password button
+  in the login page. The user interface is very simple and easy to understand.
+  When the user hit the "Forget Password" button, it will should up another
+  interface which the user can enter their email and an link will be send to their
+  mail account if the account is existed on the system.
+   */
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
@@ -25,7 +32,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               margin: EdgeInsets.only(top: height * 0.15),
               height: height * 0.85,
               decoration: BoxDecoration(
-                  color: Colors.white, //color of the box
+                  color: Colors.white, //color of the rectangle box
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(50),
                       topRight: Radius.circular(50))),
@@ -96,7 +103,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 offset: Offset(2, 2))
                           ]),
                       child: Text(
-                        "Reset".toUpperCase(),
+                        "Reset".toUpperCase(), //when you hit the "Reset" button then your email account will receive a link that you can click in and reset
                         style: TextStyle(
                             fontSize: 20,
                             color: Colors.white,
