@@ -106,7 +106,7 @@ class Recipe extends ChangeNotifier {
       selectedMeal = MealDetails(
           title: title,
           image: image,
-          id: recipeId,
+          id: int.parse(recipeId),
           servings: servings,
           readyInMinutes: readyInMinutes,
           instructions: instructions,
