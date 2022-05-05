@@ -23,10 +23,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -55,5 +52,15 @@ class DefaultFirebaseOptions {
     messagingSenderId: '297011320297',
     projectId: 'cooking-papa-342818',
     storageBucket: 'cooking-papa-342818.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyBs9kGCYtArhnP0wSHu7Kk3p7KMpayQ3us',
+    appId: '1:297011320297:ios:2d256ebe7e0b43da87a778',
+    messagingSenderId: '297011320297',
+    projectId: 'cooking-papa-342818',
+    storageBucket: 'cooking-papa-342818.appspot.com',
+    iosClientId: '297011320297-dkdlmcpb6qs34dist4mbopbcp11m5ovg.apps.googleusercontent.com',
+    iosBundleId: 'com.example.cookingPapa',
   );
 }

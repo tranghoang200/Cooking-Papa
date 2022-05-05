@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../models/meal.dart';
+import '../models/mealDetails.dart';
 import '../widgets/meal_item.dart';
 
 // FavoritesScreen is stateless class not contain any state
 // this class is display all the favorite recipe that the user like
 class FavoritesScreen extends StatelessWidget {
-  final List<Meal> favoriteMeals;
+  final List<MealDetails> favoriteMeals;
 
   FavoritesScreen(this.favoriteMeals);
 

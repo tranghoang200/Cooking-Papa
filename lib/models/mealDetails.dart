@@ -6,7 +6,7 @@ class MealDetails {
   final String image;
   final int servings;
   final int readyInMinutes;
-  final String instructions;
+  final List<String> instructions;
   final List<String> extendedIngredients;
   final String summary;
 

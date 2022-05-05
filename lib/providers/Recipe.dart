@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
-import '../models/meal.dart';
 import '../models/mealDetails.dart';
 
 class Recipe extends ChangeNotifier {
@@ -10,9 +9,9 @@ class Recipe extends ChangeNotifier {
   String _category = '';
   String _selectedRecipe = '';
   String _recipeId = '';
-  List<Meal> displayedMeals = [];
+  List<MealDetails> _displayedMeals = [];
 
-  MealDetails selectedMeal;
+  MealDetails _selectedMeal;
 
   // String title = '';
   // String image = '';
@@ -27,6 +26,10 @@ class Recipe extends ChangeNotifier {
   String get category => _category;
 
   String get selectedRecipe => _selectedRecipe;
+
+  List<MealDetails> get displayedMeals => _displayedMeals;
+
+  MealDetails get selectedMeal => _selectedMeal;
 
   void setIngredients(ingredients) {
     _ingredients = ingredients;
@@ -57,16 +60,17 @@ class Recipe extends ChangeNotifier {
     if (response.statusCode == 200) {
       var jsonResponse = await convert.jsonDecode(response.body);
       var data = await jsonResponse["results"];
-      List<Meal> list = <Meal>[];
+      List<MealDetails> list = <MealDetails>[];
       for (var i = 0; i < data.length; i++) {
-        list.add(Meal(
-            id: data[i]["id"].toString(),
+        list.add(MealDetails(
+            id: data[i]["id"],
             title: data[i]["title"],
             image: data[i]["image"]));
       }
-      displayedMeals = list;
-      notifyListeners();
+      _displayedMeals = list;
+      print(_displayedMeals);
     }
+    notifyListeners();
   }
 
   Future<void> getMealDetail(recipeId) async {
@@ -84,7 +88,7 @@ class Recipe extends ChangeNotifier {
     print(response.statusCode);
     if (response.statusCode == 200) {
       var data = convert.jsonDecode(response.body);
-
+      print(data);
       String title = data['title'];
       String image = data['image'];
       int servings = data['servings'];
@@ -103,17 +107,25 @@ class Recipe extends ChangeNotifier {
 
       List<String> extendedIngredients = list;
 
-      selectedMeal = MealDetails(
+      var instruction = instructions;
+      instruction = instruction.replaceAll('<ol>', '');
+      instruction = instruction.replaceAll('</ol>', '');
+      instruction = instruction.replaceAll('</li>', '');
+      instruction = instruction.replaceFirst('<li>', '');
+      List<String> listInstuction = instruction.split("<li>");
+
+      _selectedMeal = MealDetails(
           title: title,
           image: image,
           id: int.parse(recipeId),
           servings: servings,
           readyInMinutes: readyInMinutes,
-          instructions: instructions,
+          instructions: listInstuction,
           extendedIngredients: extendedIngredients,
           summary: summary);
-      print(selectedMeal);
+      print(_selectedMeal);
     }
-    notifyListeners();
   }
+
+  notifyListeners();
 }

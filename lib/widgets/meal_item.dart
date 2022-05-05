@@ -4,12 +4,13 @@ import '../screens/meal_detail_screen.dart';
 import '../models/meal.dart';
 
 class MealItem extends StatelessWidget {
-  final String id;
+  final int id;
   final String title;
   final String image;
+  // final String imageUrl;
   // final int duration;
-  // final Complexity complexity;
-  // final Affordability affordability;
+  // final String affordability;
+  // final String complexity;
 
   MealItem({
     @required this.id,
@@ -55,7 +56,7 @@ class MealItem extends StatelessWidget {
   void selectMeal(BuildContext context) {
     Navigator.of(context).pushNamed(
       MealDetailScreen.routeName,
-      arguments: {"id": id},
+      arguments: {"id": id.toString()},
     ).then((result) {
       if (result != null) {
         // removeItem(result);
@@ -78,10 +79,7 @@ class MealItem extends StatelessWidget {
             Stack(
               children: <Widget>[
                 ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(15),
-                    topRight: Radius.circular(15),
-                  ),
+                  borderRadius: BorderRadius.circular(15),
                   child: Image.network(
                     image,
                     height: 250,

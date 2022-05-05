@@ -40,21 +40,28 @@ class _IngredientScreenState extends State<IngredientScreen> {
       image = routeArgs['image'];
       String input2 = Provider.of<Recipe>(context).ingredients;
       ingredients = input2.split(',');
+      // setState(() {
+      //   ingredients = input2.split(',');
+      // });
       ingredientsList = input2;
-      // displayedMeals = widget.availableMeals.where((meal) {
-      //   return meal.categories.contains(categoryId);
-      // }).toList();
       _loadedInitData = true;
     }
     super.didChangeDependencies();
+  }
+
+  removeItem(int index) {
+    ingredients.removeAt(index);
+    setState(() {});
+    print(ingredients);
+    print(index);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            // title: Text(_pages[_selectedPageIndex]['title']),
-            ),
+          title: Text("Ingredient"),
+        ),
         body: Column(children: [
           Container(
               padding: EdgeInsets.all(20),
@@ -69,7 +76,7 @@ class _IngredientScreenState extends State<IngredientScreen> {
           Expanded(
               child: ListView.separated(
             padding: const EdgeInsets.all(8),
-            itemCount: ingredients.length,
+            // itemCount: ingredients.length,
             itemBuilder: (BuildContext context, int index) {
               return Row(
                 // height: 50,
@@ -96,7 +103,7 @@ class _IngredientScreenState extends State<IngredientScreen> {
                   IconButton(
                     icon: Icon(Icons.delete),
                     color: Colors.red,
-                    onPressed: () => print(ingredients[index]),
+                    onPressed: () => removeItem(index),
                   )
                 ],
               );

@@ -2,11 +2,17 @@ import 'package:cooking_papa/providers/Recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../dummy_data.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'dart:io';
 
+/**
+ * MealDetailScreen is a statefull class which contain state that change when the app run
+ * Protential State:
+ * selectedMeal: The meal that user selected
+ * _loadedInitData: load initial data
+ * _isLoading: loading the data
+ */
 class MealDetailScreen extends StatefulWidget {
   static const routeName = '/meal-detail';
 
@@ -54,6 +60,7 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
     if (!_loadedInitData) {
       final routeArgs =
           ModalRoute.of(context).settings.arguments as Map<String, String>;
+      // still under develop
       // image = routeArgs['image'];
       String recipeId = routeArgs['id'];
       print(recipeId);
@@ -65,8 +72,6 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
               _isLoading = false;
             })
           });
-
-      selectedMeal = Provider.of<Recipe>(context).selectedMeal;
       print(selectedMeal);
       _loadedInitData = true;
     }
@@ -75,59 +80,79 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // still under develop
     // final mealId = ModalRoute.of(context).settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
-        title: Text('${selectedMeal.title}'),
+        title: _isLoading
+            ? Text('')
+            : Text('${Provider.of<Recipe>(context).selectedMeal.title}'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 300,
-              width: double.infinity,
-              child: Image.network(
-                selectedMeal.image,
-                fit: BoxFit.cover,
-              ),
-            ),
-            buildSectionTitle(context, 'Ingredients'),
-            buildContainer(
-              ListView.builder(
-                itemBuilder: (ctx, index) => Card(
-                  color: Theme.of(context).accentColor,
-                  child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 5,
-                        horizontal: 10,
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    height: 300,
+                    width: double.infinity,
+                    child: Image.network(
+                      Provider.of<Recipe>(context).selectedMeal.image,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  buildSectionTitle(context, 'Ingredients'),
+                  buildContainer(
+                    ListView.builder(
+                      itemBuilder: (ctx, index) {
+                        selectedMeal =
+                            Provider.of<Recipe>(context).selectedMeal;
+                        return Card(
+                          color: Theme.of(context).accentColor,
+                          child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                vertical: 5,
+                                horizontal: 10,
+                              ),
+                              child: Text(
+                                  selectedMeal.extendedIngredients[index])),
+                        );
+                      },
+                      itemCount: Provider.of<Recipe>(context)
+                          .selectedMeal
+                          .extendedIngredients
+                          .length,
+                    ),
+                  ),
+                  // still under develop
+                  buildSectionTitle(context, 'Steps'),
+                  buildContainer(
+                    ListView.builder(
+                      itemBuilder: (ctx, index) => Column(
+                        children: [
+                          ListTile(
+                            leading: CircleAvatar(
+                              child: Text('# ${(index + 1)}'),
+                            ),
+                            title: Text(
+                              Provider.of<Recipe>(context)
+                                  .selectedMeal
+                                  .instructions[index],
+                            ),
+                          ),
+                          Divider()
+                        ],
                       ),
-                      child: Text(selectedMeal.extendedIngredients[index])),
-                ),
-                itemCount: selectedMeal.extendedIngredients.length,
+                      itemCount: Provider.of<Recipe>(context)
+                          .selectedMeal
+                          .instructions
+                          .length,
+                    ),
+                  ),
+                ],
               ),
             ),
-            // buildSectionTitle(context, 'Steps'),
-            // buildContainer(
-            //   ListView.builder(
-            //     itemBuilder: (ctx, index) => Column(
-            //       children: [
-            //         ListTile(
-            //           leading: CircleAvatar(
-            //             child: Text('# ${(index + 1)}'),
-            //           ),
-            //           title: Text(
-            //             selectedMeal.steps[index],
-            //           ),
-            //         ),
-            //         Divider()
-            //       ],
-            //     ),
-            //     itemCount: selectedMeal.steps.length,
-            //   ),
-            // ),
-          ],
-        ),
-      ),
+      // still under develop
       // floatingActionButton: FloatingActionButton(
       //   child: Icon(
       //     widget.isFavorite(mealId) ? Icons.star : Icons.star_border,
