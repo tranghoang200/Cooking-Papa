@@ -10,7 +10,7 @@ class Recipe extends ChangeNotifier {
   String _selectedRecipe = '';
   String _recipeId = '';
   List<MealDetails> _displayedMeals = [];
-
+  List<MealDetails> _favoriteList = [];
   MealDetails _selectedMeal;
 
   // String title = '';
@@ -31,6 +31,8 @@ class Recipe extends ChangeNotifier {
 
   MealDetails get selectedMeal => _selectedMeal;
 
+  List<MealDetails> get favoriteList => _favoriteList;
+
   void setIngredients(ingredients) {
     _ingredients = ingredients;
     notifyListeners();
@@ -43,6 +45,11 @@ class Recipe extends ChangeNotifier {
 
   void setSelectedRecipe(selectedRecipe) {
     _selectedRecipe = selectedRecipe;
+    notifyListeners();
+  }
+
+  void setFavoriteList(favortiteList) {
+    _favoriteList = favoriteList;
     notifyListeners();
   }
 
@@ -68,7 +75,6 @@ class Recipe extends ChangeNotifier {
             image: data[i]["image"]));
       }
       _displayedMeals = list;
-      print(_displayedMeals);
     }
     notifyListeners();
   }
@@ -123,9 +129,8 @@ class Recipe extends ChangeNotifier {
           instructions: listInstuction,
           extendedIngredients: extendedIngredients,
           summary: summary);
-      print(_selectedMeal);
     }
-  }
 
-  notifyListeners();
+    notifyListeners();
+  }
 }

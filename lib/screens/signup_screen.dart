@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const routeName = '/signup';
@@ -101,7 +102,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
             UserCredential userCredential = await FirebaseAuth.instance
                 .createUserWithEmailAndPassword(
                     email: _email.text, password: _password.text);
-            Navigator.of(context).pushNamed('/');
+            final user = FirebaseAuth.instance.currentUser;
+            final uid = user.uid;
+            DatabaseReference ref =
+                FirebaseDatabase.instance.ref(uid + "/favorite");
+
+            await ref
+                .set([])
+                .then((value) => Navigator.of(context).pushNamed('/'))
+                .catchError((error) => print(error));
           } on FirebaseAuthException catch (e) {
             if (e.code == 'weak-password') {
               return showDialog(

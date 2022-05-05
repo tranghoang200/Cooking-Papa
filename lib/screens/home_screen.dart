@@ -8,6 +8,8 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 /**
  * HomeScreen is a statefull class which contain state that change when the app run
@@ -24,6 +26,43 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  var _loadedInitData = false;
+  var _isLoading = false;
+  var favoriteMeals;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    getData();
+    super.didChangeDependencies();
+  }
+
+  getData() async {
+    if (!_loadedInitData) {
+      final user = FirebaseAuth.instance.currentUser;
+      final uid = user.uid;
+      final ref = FirebaseDatabase.instance.ref();
+      print(uid);
+      setState(() {
+        _isLoading = true;
+      });
+      final snapshot = await ref.child('$uid/favorite').get();
+      print(snapshot);
+      if (snapshot.exists) {
+        print(snapshot.value);
+        Provider.of<Recipe>(context).setFavoriteList(snapshot.value);
+      } else {
+        print('No data available.');
+      }
+      _loadedInitData = true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +96,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
             ),
-            ImagePickerButton(onImageSelected: onImageSelected)
+            Container(
+              padding: EdgeInsets.all(20),
+              child: Text(
+                'Saved Recipe',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ),
+            // Container(
+            //   margin: EdgeInsets.all(20),
+            //   child: _isLoading
+            //       ? Center(child: CircularProgressIndicator())
+            //       : ListView.builder(
+            //           itemBuilder: (ctx, index) {
+            //             favoriteMeals =
+            //                 Provider.of<Recipe>(context).favoriteList;
+            //             return Card(
+            //               color: Theme.of(context).accentColor,
+            //               child: Padding(
+            //                   padding: EdgeInsets.symmetric(
+            //                     vertical: 5,
+            //                     horizontal: 10,
+            //                   ),
+            //                   child: Text(favoriteMeals[index])),
+            //             );
+            //           },
+            //           itemCount:
+            //               Provider.of<Recipe>(context).favoriteList.length,
+            //         ),
+            // ),
+            ImagePickerButton(onImageSelected: onImageSelected),
           ]),
         ));
   }

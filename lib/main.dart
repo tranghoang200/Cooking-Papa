@@ -16,6 +16,7 @@ import 'firebase_options.dart';
 import './providers/Recipe.dart';
 import 'package:provider/provider.dart';
 import 'package:cooking_papa/screens/ForgotPassword.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

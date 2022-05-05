@@ -40,9 +40,9 @@ class _IngredientScreenState extends State<IngredientScreen> {
       image = routeArgs['image'];
       String input2 = Provider.of<Recipe>(context).ingredients;
       ingredients = input2.split(',');
-      // setState(() {
-      //   ingredients = input2.split(',');
-      // });
+      setState(() {
+        ingredients = input2.split(',');
+      });
       ingredientsList = input2;
       _loadedInitData = true;
     }
@@ -76,7 +76,7 @@ class _IngredientScreenState extends State<IngredientScreen> {
           Expanded(
               child: ListView.separated(
             padding: const EdgeInsets.all(8),
-            // itemCount: ingredients.length,
+            itemCount: ingredients.length,
             itemBuilder: (BuildContext context, int index) {
               return Row(
                 // height: 50,
