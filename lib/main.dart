@@ -1,3 +1,4 @@
+import 'package:cooking_papa/models/mealDetails.dart';
 import 'package:cooking_papa/screens/home_screen.dart';
 import 'package:cooking_papa/screens/ingredient_screen.dart';
 import 'package:cooking_papa/screens/login_screen.dart';
@@ -17,6 +18,8 @@ import './providers/Recipe.dart';
 import 'package:provider/provider.dart';
 import 'package:cooking_papa/screens/ForgotPassword.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +41,40 @@ class _MyAppState extends State<MyApp> {
     'vegan': false,
     'vegetarian': false,
   };
-  List<Meal> _favoriteMeals = [];
+  List<MealDetails> _favoriteMeals = [];
+  var _loadedInitData = false;
+  var _isLoading = false;
+
+  @override
+  void didChangeDependencies() {
+    getData();
+    super.didChangeDependencies();
+  }
+
+  getData() async {
+    if (!_loadedInitData) {
+      final user = FirebaseAuth.instance.currentUser;
+      final uid = user.uid;
+      final ref = FirebaseDatabase.instance.ref();
+      print(uid);
+      setState(() {
+        _isLoading = true;
+      });
+      final snapshot = await ref.child('$uid/favorite').get();
+      print(snapshot);
+      if (snapshot.exists) {
+        print(snapshot.value);
+        Provider.of<Recipe>(context).setFavoriteList(snapshot.value);
+        setState(() {
+          _isLoading = false;
+        });
+      } else {
+        print('No data available.');
+      }
+      _favoriteMeals = Provider.of<Recipe>(context).favoriteList;
+      _loadedInitData = true;
+    }
+  }
 
   void _setFilters(Map<String, bool> filterData) {
     setState(() {
@@ -46,7 +82,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void _toggleFavorite(String mealId) {
+  void _toggleFavorite(int mealId) {
     final existingIndex =
         _favoriteMeals.indexWhere((meal) => meal.id == mealId);
     if (existingIndex >= 0) {
@@ -58,7 +94,7 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  bool _isMealFavorite(String id) {
+  bool _isMealFavorite(int id) {
     return _favoriteMeals.any((meal) => meal.id == id);
   }
 

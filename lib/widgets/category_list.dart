@@ -18,9 +18,6 @@ class CategoryList extends StatelessWidget {
           id: displayedMeals[index].id,
           title: displayedMeals[index].title,
           image: displayedMeals[index].image,
-          // duration: displayedMeals[index].duration,
-          // affordability: displayedMeals[index].affordability,
-          // complexity: displayedMeals[index].complexity,
         );
       },
       itemCount: Provider.of<Recipe>(context).displayedMeals.length,

@@ -152,13 +152,15 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
                 ],
               ),
             ),
-      // still under develop
-      // floatingActionButton: FloatingActionButton(
-      //   child: Icon(
-      //     widget.isFavorite(mealId) ? Icons.star : Icons.star_border,
-      //   ),
-      //   onPressed: () => widget.toggleFavorite(mealId),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          widget.isFavorite(Provider.of<Recipe>(context).selectedMeal.id)
+              ? Icons.star
+              : Icons.star_border,
+        ),
+        onPressed: () =>
+            widget.toggleFavorite(Provider.of<Recipe>(context).selectedMeal.id),
+      ),
     );
   }
 }

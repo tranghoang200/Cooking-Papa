@@ -49,7 +49,14 @@ class Recipe extends ChangeNotifier {
   }
 
   void setFavoriteList(favortiteList) {
-    _favoriteList = favoriteList;
+    List<MealDetails> list = <MealDetails>[];
+    for (var i = 0; i < favortiteList.length; i++) {
+      list.add(MealDetails(
+          id: favortiteList[i]["id"],
+          title: favortiteList[i]["title"],
+          image: favortiteList[i]["image"]));
+    }
+    _favoriteList = list;
     notifyListeners();
   }
 

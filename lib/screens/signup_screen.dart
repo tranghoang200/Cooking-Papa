@@ -104,11 +104,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     email: _email.text, password: _password.text);
             final user = FirebaseAuth.instance.currentUser;
             final uid = user.uid;
-            DatabaseReference ref =
-                FirebaseDatabase.instance.ref(uid + "/favorite");
-
+            DatabaseReference ref = FirebaseDatabase.instance.ref();
             await ref
-                .set([])
+                .update({
+                  uid: {
+                    "favorite": {
+                      0: {
+                        'title': 'sample',
+                        'image': 'sample',
+                        'id': 1,
+                        'servings': 'sample',
+                        'readyInMinutes': 35,
+                        'instructions': '',
+                        'extendedIngredients': '',
+                        'summary': ''
+                      }
+                    }
+                  }
+                })
                 .then((value) => Navigator.of(context).pushNamed('/'))
                 .catchError((error) => print(error));
           } on FirebaseAuthException catch (e) {

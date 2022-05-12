@@ -1,3 +1,4 @@
+import 'package:cooking_papa/models/mealDetails.dart';
 import 'package:flutter/material.dart';
 
 // import '../widgets/main_drawer.dart';
@@ -12,7 +13,7 @@ import './home_screen.dart';
  */
 
 class TabsScreen extends StatefulWidget {
-  final List<Meal> favoriteMeals;
+  final List<MealDetails> favoriteMeals;
 
   TabsScreen(this.favoriteMeals);
 
