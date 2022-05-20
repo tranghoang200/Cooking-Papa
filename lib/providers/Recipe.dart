@@ -64,9 +64,10 @@ class Recipe extends ChangeNotifier {
     var url = Uri.https('api.spoonacular.com', '/recipes/complexSearch', {
       'apiKey': 'a1010fb55d144683a37a103da734ca3c',
       "cuisine": _category.toLowerCase(),
-      // "includeIngredients": ingredients.toLowerCase()
+      // "includeIngredients": _ingredients.toLowerCase()
     });
 
+    print(url);
     var response = await http.get(url, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     });
@@ -120,12 +121,16 @@ class Recipe extends ChangeNotifier {
 
       List<String> extendedIngredients = list;
 
-      var instruction = instructions;
-      instruction = instruction.replaceAll('<ol>', '');
-      instruction = instruction.replaceAll('</ol>', '');
-      instruction = instruction.replaceAll('</li>', '');
-      instruction = instruction.replaceFirst('<li>', '');
-      List<String> listInstuction = instruction.split("<li>");
+      List<String> listInstuction = [''];
+
+      if (instructions != null) {
+        var instruction = instructions;
+        instruction = instruction.replaceAll('<ol>', '');
+        instruction = instruction.replaceAll('</ol>', '');
+        instruction = instruction.replaceAll('</li>', '');
+        instruction = instruction.replaceFirst('<li>', '');
+        listInstuction = instruction.split("<li>");
+      }
 
       _selectedMeal = MealDetails(
           title: title,
